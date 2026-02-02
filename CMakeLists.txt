@@ -1,22 +1,23 @@
+# Yêu cầu phiên bản CMake tối thiểu
 cmake_minimum_required(VERSION 3.10)
 
-# Project name
+# Tên dự án và phiên bản
 project(NihongoApp VERSION 1.0)
 
-# Set C++ standard
+# Thiết lập tiêu chuẩn C++
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Automatically find all .cpp files in src/ directory
+# Tự động tìm tất cả các tệp .cpp trong thư mục src/
 file(GLOB SOURCES "src/*.cpp")
 
-# Add executable with all found sources
+# Tạo tệp thực thi từ tất cả các nguồn đã tìm thấy
 add_executable(nihongo_app ${SOURCES})
 
-# Include directories
+# Cấu hình thư mục chứa các tệp header (.h)
 target_include_directories(nihongo_app PRIVATE include)
 
-# For Windows: Open console window
+# Cấu hình cho Windows: Luôn hiển thị cửa sổ console
 if(WIN32)
     set_target_properties(nihongo_app PROPERTIES
         WIN32_EXECUTABLE FALSE
