@@ -13,7 +13,8 @@ int main() {
     #ifdef _WIN32
     SetConsoleOutputCP(65001);
     #endif
-    CSVHandler handler("./data/flashcards.csv");
+
+    CSVHandler handler("../tuvung/flashcards.csv");
     std::cout << "Đang đọc dữ liệu từ file CSV..." << std::endl;
     std::vector<flashCard> danhSachHienTai = handler.docDuLieu();
 
