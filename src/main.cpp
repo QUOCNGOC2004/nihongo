@@ -1,32 +1,38 @@
 #include <iostream>
-#include <vector>
-#include "TiengViet.hpp"
-#include "TiengNhat.hpp"
-#include <windows.h> // For setting console output code page
+#include "flashCard.hpp"
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 int main() {
-    // Set console output to UTF-8 to display Vietnamese marks and Kanji correctly
+    
+    #ifdef _WIN32
     SetConsoleOutputCP(65001);
+    #endif
 
-    std::cout << "=== Test Flashcards ===" << std::endl;
+    std::cout << "Testing FlashCard Class (Optimized)..." << std::endl;
 
-    // Test TiengViet
-    TiengViet tv1("Quả táo");
-    std::cout << "Vietnamese Side: ";
-    tv1.hienThi();
+    flashCard card("Xin chào", "こんにちは", "Greeting");
 
-    // Test TiengNhat
-    TiengNhat tn1("林檎", "りんご", "ringo");
-    std::cout << "Japanese Side: ";
-    tn1.hienThi();
+    std::cout << "Initial state:" << std::endl;
+    card.hienThi();
+    std::cout << "-----------------" << std::endl;
 
-    // Combined usage simulation
-    std::cout << "\n--- Card Pair ---" << std::endl;
-    TiengViet vnCard("Nguoi hoc"); // Learner/Student
-    TiengNhat jpCard("学生", "がくせい", "gakusei");
+    card.setTiengViet("Tạm biệt");
+    card.setTiengNhat("さようなら");
+    card.setGhiChu("  Farewell");
 
-    vnCard.hienThi();
-    jpCard.hienThi();
+    std::cout << "After individual setters:" << std::endl;
+
+    std::cout << "Tiếng Việt: " << card.getTiengViet() << std::endl;
+    std::cout << "Tiếng Nhật: " << card.getTiengNhat() << std::endl;
+    std::cout << "Ghi Chú: " << card.getGhiChu() << std::endl;
+    std::cout << "-----------------" << std::endl;
+
+    card.setAll("Cảm ơn", "ありがとう", "Thank you");
+    std::cout << "After setAll:" << std::endl;
+    std::cout << card.getAll() << std::endl;
 
     return 0;
 }
