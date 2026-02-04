@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <ctime>
 #include "flashCard.hpp"
 
 class CSVHandler {
@@ -14,6 +15,12 @@ private:
     
     // Hàm hỗ trợ: Giải mã dữ liệu CSV (xử lý dấu ngoặc kép)
     std::string unescapeCSV(const std::string& data) const;
+    
+    // Hàm hỗ trợ: Chuyển timestamp thành string
+    std::string formatTimestamp(time_t t) const;
+    
+    // Hàm hỗ trợ: Chuyển string thành timestamp
+    time_t parseTimestamp(const std::string& str) const;
 
 public:
     // Constructor: Nhận đường dẫn file CSV
@@ -28,7 +35,7 @@ public:
     // Thêm nhiều flashCard vào cuối file
     bool themNhieuDuLieu(const std::vector<flashCard>& cards);
     
-    // Đọc tất cả dữ liệu từ file CSV
+    // Mở và Đọc tất cả dữ liệu từ file CSV
     std::vector<flashCard> docDuLieu();
     
     // Kiểm tra file có tồn tại không

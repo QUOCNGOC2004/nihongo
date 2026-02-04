@@ -1,5 +1,7 @@
 #include "CSVHandler.hpp"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
 // Constructor
 CSVHandler::CSVHandler(const std::string& path) : filePath(path) {}
@@ -43,6 +45,29 @@ std::string CSVHandler::unescapeCSV(const std::string& data) const {
     return result;
 }
 
+// Chuyển timestamp thành string
+std::string CSVHandler::formatTimestamp(time_t t) const {
+    struct tm* timeinfo = localtime(&t);
+    std::ostringstream oss;
+    oss << std::put_time(timeinfo, "%Y-%m-%d %H:%M:%S");
+    return oss.str();
+}
+
+// Chuyển string thành timestamp
+time_t CSVHandler::parseTimestamp(const std::string& str) const {
+    if (str.empty()) return time(nullptr);
+    
+    struct tm tm = {};
+    std::istringstream ss(str);
+    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
+    
+    if (ss.fail()) {
+        return time(nullptr); // Nếu parse thất bại, trả về thời gian hiện tại
+    }
+    
+    return mktime(&tm);
+}
+
 // Lưu toàn bộ dữ liệu vào file (GHI ĐÈ)
 bool CSVHandler::luuDuLieu(const std::vector<flashCard>& cards) {
     std::ofstream file(filePath);
@@ -53,13 +78,14 @@ bool CSVHandler::luuDuLieu(const std::vector<flashCard>& cards) {
     }
     
     // Ghi header
-    file << "Tieng Viet,Tieng Nhat,Ghi Chu" << std::endl;
+    file << "Tieng Viet,Tieng Nhat,Ghi Chu,Time" << std::endl;
     
     // Ghi từng flashCard
     for (const auto& card : cards) {
         file << escapeCSV(card.getTiengViet()) << ","
              << escapeCSV(card.getTiengNhat()) << ","
-             << escapeCSV(card.getGhiChu()) << std::endl;
+             << escapeCSV(card.getGhiChu()) << ","
+             << formatTimestamp(card.getTimestamp()) << std::endl;
     }
     
     file.close();
@@ -82,13 +108,14 @@ bool CSVHandler::themDuLieu(const flashCard& card) {
     
     // Nếu file mới tạo, thêm header
     if (!fileExists) {
-        file << "Tieng Viet,Tieng Nhat,Ghi Chu" << std::endl;
+        file << "Tieng Viet,Tieng Nhat,Ghi Chu,Time" << std::endl;
     }
     
     // Thêm dữ liệu mới
     file << escapeCSV(card.getTiengViet()) << ","
          << escapeCSV(card.getTiengNhat()) << ","
-         << escapeCSV(card.getGhiChu()) << std::endl;
+         << escapeCSV(card.getGhiChu()) << ","
+         << formatTimestamp(card.getTimestamp()) << std::endl;
     
     file.close();
     std::cout << "Da them 1 flashcard vao file!" << std::endl;
@@ -108,14 +135,15 @@ bool CSVHandler::themNhieuDuLieu(const std::vector<flashCard>& cards) {
     
     // Nếu file mới tạo, thêm header
     if (!fileExists) {
-        file << "Tieng Viet,Tieng Nhat,Ghi Chu" << std::endl;
+        file << "Tieng Viet,Tieng Nhat,Ghi Chu,Time" << std::endl;
     }
     
     // Thêm từng flashCard
     for (const auto& card : cards) {
         file << escapeCSV(card.getTiengViet()) << ","
              << escapeCSV(card.getTiengNhat()) << ","
-             << escapeCSV(card.getGhiChu()) << std::endl;
+             << escapeCSV(card.getGhiChu()) << ","
+             << formatTimestamp(card.getTimestamp()) << std::endl;
     }
     
     file.close();
@@ -129,7 +157,7 @@ std::vector<flashCard> CSVHandler::docDuLieu() {
     std::ifstream file(filePath);
     
     if (!file.is_open()) {
-        std::cerr << "Loi: Khong the mo file de doc!" << std::endl;
+        std::cerr << "Lỗi: Chưa tạo file hoặc không thể mở file để đọc" << std::endl;
         return cards;
     }
     
@@ -175,8 +203,13 @@ std::vector<flashCard> CSVHandler::docDuLieu() {
         // Thêm field cuối cùng
         fields.push_back(unescapeCSV(field));
         
-        // Tạo flashCard nếu có đủ 3 cột
-        if (fields.size() >= 3) {
+        // Tạo flashCard với timestamp
+        if (fields.size() >= 4) {
+            // File mới có cột Time
+            time_t timestamp = parseTimestamp(fields[3]);
+            cards.emplace_back(fields[0], fields[1], fields[2], timestamp);
+        } else if (fields.size() == 3) {
+            // File cũ không có cột Time, sử dụng thời gian hiện tại
             cards.emplace_back(fields[0], fields[1], fields[2]);
         } else if (fields.size() == 2) {
             // Nếu thiếu cột Ghi Chú, thêm chuỗi rỗng
@@ -205,7 +238,7 @@ bool CSVHandler::taoFileMoi() {
     }
     
     // Ghi header
-    file << "Tieng Viet,Tieng Nhat,Ghi Chu" << std::endl;
+    file << "Tieng Viet,Tieng Nhat,Ghi Chu,Time" << std::endl;
     file.close();
     
     std::cout << "Da tao file CSV moi: " << filePath << std::endl;
