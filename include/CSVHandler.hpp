@@ -15,12 +15,6 @@ private:
     
     // Hàm hỗ trợ: Giải mã dữ liệu CSV (xử lý dấu ngoặc kép)
     std::string unescapeCSV(const std::string& data) const;
-    
-    // Hàm hỗ trợ: Chuyển timestamp thành string
-    std::string formatTimestamp(time_t t) const;
-    
-    // Hàm hỗ trợ: Chuyển string thành timestamp
-    time_t parseTimestamp(const std::string& str) const;
 
 public:
     // Constructor: Nhận đường dẫn file CSV

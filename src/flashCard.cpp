@@ -1,7 +1,6 @@
 #include "flashCard.hpp"
+#include "TimeUtils.hpp"
 #include <iostream>
-#include <iomanip>
-#include <sstream>
 
 flashCard::flashCard(const std::string& tv, const std::string& tn, const std::string& gc, time_t t) 
     : TiengViet(tv), TiengNhat(tn), GhiChu(gc) {
@@ -14,7 +13,7 @@ void flashCard::hienThi() const {
     std::cout << "Tieng Viet: " << this->TiengViet;
     std::cout << " | Tieng Nhat: " << this->TiengNhat;
     std::cout << " | Ghi Chu: " << this->GhiChu;
-    std::cout << " | Time: " << getFormattedTime() << std::endl;
+    std::cout << " | Time: " << TimeUtils::formatTimestampFull(timestamp) << std::endl;
 }
 
 
@@ -52,13 +51,6 @@ time_t flashCard::getTimestamp() const {
     return this->timestamp;
 }
 
-std::string flashCard::getFormattedTime() const {
-    struct tm* timeinfo = localtime(&timestamp);
-    std::ostringstream oss;
-    oss << std::put_time(timeinfo, "%Y-%m-%d %H:%M:%S");
-    return oss.str();
-}
-
 std::string flashCard::getAll() const {
-    return "Tieng Viet: " + this->TiengViet + ", Tieng Nhat: " + this->TiengNhat + ", Ghi Chu: " + this->GhiChu + ", Time: " + getFormattedTime();
+    return "Tieng Viet: " + this->TiengViet + ", Tieng Nhat: " + this->TiengNhat + ", Ghi Chu: " + this->GhiChu + ", Time: " + TimeUtils::formatTimestampFull(timestamp);
 }

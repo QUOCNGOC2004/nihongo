@@ -26,5 +26,4 @@ public:
     std::string getTiengNhat() const;
     std::string getAll() const;
     time_t getTimestamp() const;
-    std::string getFormattedTime() const;
 };

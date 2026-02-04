@@ -1,7 +1,6 @@
 #include "CSVHandler.hpp"
+#include "TimeUtils.hpp"
 #include <iostream>
-#include <iomanip>
-#include <sstream>
 
 // Constructor
 CSVHandler::CSVHandler(const std::string& path) : filePath(path) {}
@@ -45,29 +44,6 @@ std::string CSVHandler::unescapeCSV(const std::string& data) const {
     return result;
 }
 
-// Chuyển timestamp thành string
-std::string CSVHandler::formatTimestamp(time_t t) const {
-    struct tm* timeinfo = localtime(&t);
-    std::ostringstream oss;
-    oss << std::put_time(timeinfo, "%Y-%m-%d %H:%M:%S");
-    return oss.str();
-}
-
-// Chuyển string thành timestamp
-time_t CSVHandler::parseTimestamp(const std::string& str) const {
-    if (str.empty()) return time(nullptr);
-    
-    struct tm tm = {};
-    std::istringstream ss(str);
-    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
-    
-    if (ss.fail()) {
-        return time(nullptr); // Nếu parse thất bại, trả về thời gian hiện tại
-    }
-    
-    return mktime(&tm);
-}
-
 // Lưu toàn bộ dữ liệu vào file (GHI ĐÈ)
 bool CSVHandler::luuDuLieu(const std::vector<flashCard>& cards) {
     std::ofstream file(filePath);
@@ -85,7 +61,7 @@ bool CSVHandler::luuDuLieu(const std::vector<flashCard>& cards) {
         file << escapeCSV(card.getTiengViet()) << ","
              << escapeCSV(card.getTiengNhat()) << ","
              << escapeCSV(card.getGhiChu()) << ","
-             << formatTimestamp(card.getTimestamp()) << std::endl;
+             << TimeUtils::formatTimestampFull(card.getTimestamp()) << std::endl;
     }
     
     file.close();
@@ -115,7 +91,7 @@ bool CSVHandler::themDuLieu(const flashCard& card) {
     file << escapeCSV(card.getTiengViet()) << ","
          << escapeCSV(card.getTiengNhat()) << ","
          << escapeCSV(card.getGhiChu()) << ","
-         << formatTimestamp(card.getTimestamp()) << std::endl;
+         << TimeUtils::formatTimestampFull(card.getTimestamp()) << std::endl;
     
     file.close();
     std::cout << "Da them 1 flashcard vao file!" << std::endl;
@@ -143,7 +119,7 @@ bool CSVHandler::themNhieuDuLieu(const std::vector<flashCard>& cards) {
         file << escapeCSV(card.getTiengViet()) << ","
              << escapeCSV(card.getTiengNhat()) << ","
              << escapeCSV(card.getGhiChu()) << ","
-             << formatTimestamp(card.getTimestamp()) << std::endl;
+             << TimeUtils::formatTimestampFull(card.getTimestamp()) << std::endl;
     }
     
     file.close();
@@ -206,7 +182,7 @@ std::vector<flashCard> CSVHandler::docDuLieu() {
         // Tạo flashCard với timestamp
         if (fields.size() >= 4) {
             // File mới có cột Time
-            time_t timestamp = parseTimestamp(fields[3]);
+            time_t timestamp = TimeUtils::parseTimestamp(fields[3]);
             cards.emplace_back(fields[0], fields[1], fields[2], timestamp);
         } else if (fields.size() == 3) {
             // File cũ không có cột Time, sử dụng thời gian hiện tại

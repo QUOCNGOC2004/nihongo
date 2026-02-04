@@ -17,7 +17,4 @@ public:
     // Lọc từ vựng theo ngày và xáo trộn
     static std::vector<flashCard> getShuffledCardsByDate(const std::vector<flashCard>& cards, const std::string& date);
     
-private:
-    // Hàm helper: Chuyển timestamp thành string ngày "YYYY-MM-DD"
-    static std::string timestampToDateString(time_t timestamp);
 };
