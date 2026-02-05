@@ -79,7 +79,10 @@ void MenuHelper::onTiengNhat(std::vector<flashCard> &cards)
             // Hiển thị tiếng Việt + tiếng Nhật + ghi chú
             std::cout << "\n 🙂 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
             std::cout << "\n 🤔 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
-            std::cout << "\n 📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
+            if (!shuffledCards[currentIndex].getGhiChu().empty())
+            {
+                std::cout << "\n 📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
+            }
         }
 
         std::cout << "\n────────────────────────────────────────────────────────────────" << std::endl;
@@ -162,7 +165,10 @@ void MenuHelper::onTiengViet(std::vector<flashCard> &cards)
             // Hiển thị tiếng Nhật + tiếng Việt + ghi chú
             std::cout << "\n 🤔 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
             std::cout << "\n 🙂 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
-            std::cout << "\n 📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
+            if (!shuffledCards[currentIndex].getGhiChu().empty())
+            {
+                std::cout << "\n 📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
+            }
         }
 
         std::cout << "\n────────────────────────────────────────────────────────────────" << std::endl;

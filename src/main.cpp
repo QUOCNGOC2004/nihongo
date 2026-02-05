@@ -6,6 +6,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
+// #include <filesystem>
 #endif
 
 int main() {
@@ -14,7 +15,20 @@ int main() {
     SetConsoleOutputCP(65001);
     #endif
 
-    CSVHandler handler("../tuvung/flashcards.csv");
+        CSVHandler handler("../tuvung/flashcards.csv");
+
+
+    // #ifdef _WIN32
+    // char exePathBuf[MAX_PATH];
+    // GetModuleFileNameA(NULL, exePathBuf, MAX_PATH);
+    // std::filesystem::path exePath(exePathBuf);
+    // std::filesystem::path exeDir = exePath.parent_path();
+    // std::filesystem::path csvDir = exeDir / "tuvung";
+    // std::filesystem::path csvFile = csvDir / "flashcards.csv";
+    // CSVHandler handler(csvFile.string());
+    // #else
+    // CSVHandler handler("tuvung/flashcards.csv");
+    // #endif
     
     // Đọc dữ liệu từ file
     std::cout << "📖 Đang đọc dữ liệu từ file CSV..." << std::endl;

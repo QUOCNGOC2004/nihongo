@@ -1,9 +1,21 @@
 #include "CSVHandler.hpp"
 #include "TimeUtils.hpp"
 #include <iostream>
+#include <filesystem>
 
 // Constructor
-CSVHandler::CSVHandler(const std::string& path) : filePath(path) {}
+CSVHandler::CSVHandler(const std::string& path) : filePath(path) {
+    // Bỏ comment dòng dưới nếu muốn tự động tạo thư mục khi khởi tạo CSVHandler
+    // try {
+    //     std::filesystem::path p(filePath);
+    //     auto parent = p.parent_path();
+    //     if (!parent.empty() && !std::filesystem::exists(parent)) {
+    //         std::filesystem::create_directories(parent);
+    //     }
+    // } catch (const std::exception& e) {
+    //     std::cerr << "Loi: Khong the tao thu muc: " << e.what() << std::endl;
+    // }
+}
 
 // Hàm escape: Xử lý dấu phẩy và dấu ngoặc kép trong dữ liệu
 std::string CSVHandler::escapeCSV(const std::string& data) const {
