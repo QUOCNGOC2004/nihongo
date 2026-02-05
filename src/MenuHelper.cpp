@@ -10,7 +10,7 @@
 // 1. Hiển thị toàn bộ danh sách từ vựng (không hiển thị time, không xáo trộn)
 void MenuHelper::hienThiToanBoDanhSach(const std::vector<flashCard>& cards) {
     std::cout << "\n╔════════════════════════════════════════════════════════════════╗" << std::endl;
-    std::cout << "║          DANH SÁCH TOÀN BỘ TỪ VỰNG                            ║" << std::endl;
+    std::cout << "║          DANH SÁCH TOÀN BỘ TỪ VỰNG                             ║" << std::endl;
     std::cout << "╚════════════════════════════════════════════════════════════════╝" << std::endl;
     
     if (cards.empty()) {
@@ -58,14 +58,12 @@ void MenuHelper::onTiengNhat(std::vector<flashCard>& cards) {
         
         if (!showAnswer) {
             // Hiển thị tiếng Việt
-            std::cout << "\n🇻🇳 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
-            std::cout << "\n🔒 Tiếng Nhật: [Ấn 'w' để hiển thị]" << std::endl;
-            std::cout << "🔒 Ghi chú: [Ấn 'w' để hiển thị]" << std::endl;
+            std::cout << "\n 🙂 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
         } else {
             // Hiển thị tiếng Việt + tiếng Nhật + ghi chú
-            std::cout << "\n🇻🇳 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
-            std::cout << "\n🇯🇵 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
-            std::cout << "📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
+            std::cout << "\n 🙂 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
+            std::cout << "\n 🤔 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
+            std::cout << "\n 📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
         }
         
         std::cout << "\n────────────────────────────────────────────────────────────────" << std::endl;
@@ -126,14 +124,12 @@ void MenuHelper::onTiengViet(std::vector<flashCard>& cards) {
         
         if (!showAnswer) {
             // Hiển thị tiếng Nhật
-            std::cout << "\n🇯🇵 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
-            std::cout << "\n🔒 Tiếng Việt: [Ấn 'w' để hiển thị]" << std::endl;
-            std::cout << "🔒 Ghi chú: [Ấn 'w' để hiển thị]" << std::endl;
+            std::cout << "\n  🤔 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
         } else {
             // Hiển thị tiếng Nhật + tiếng Việt + ghi chú
-            std::cout << "\n🇯🇵 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
-            std::cout << "\n🇻🇳 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
-            std::cout << "📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
+            std::cout << "\n 🤔 Tiếng Nhật: " << shuffledCards[currentIndex].getTiengNhat() << std::endl;
+            std::cout << "\n 🙂 Tiếng Việt: " << shuffledCards[currentIndex].getTiengViet() << std::endl;
+            std::cout << "\n 📝 Ghi chú: " << shuffledCards[currentIndex].getGhiChu() << std::endl;
         }
         
         std::cout << "\n────────────────────────────────────────────────────────────────" << std::endl;
@@ -204,15 +200,15 @@ void MenuHelper::themTuVungMoi(CSVHandler& handler, std::vector<flashCard>& card
 void MenuHelper::hienThiMenu() {
     system("cls");
     std::cout << "╔════════════════════════════════════════════════════════════════╗" << std::endl;
-    std::cout << "║          CHƯƠNG TRÌNH HỌC TỪ VỰNG TIẾNG NHẬT                  ║" << std::endl;
+    std::cout << "║          CHƯƠNG TRÌNH HỌC TỪ VỰNG TIẾNG NHẬT                   ║" << std::endl;
     std::cout << "╚════════════════════════════════════════════════════════════════╝" << std::endl;
     std::cout << "\n📋 MENU CHÍNH:" << std::endl;
     std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
-    std::cout << "  1️⃣  Hiển thị toàn bộ danh sách từ vựng" << std::endl;
-    std::cout << "  2️⃣  Ôn tiếng Nhật (Việt → Nhật)" << std::endl;
-    std::cout << "  3️⃣  Ôn tiếng Việt (Nhật → Việt)" << std::endl;
-    std::cout << "  4️⃣  Thêm từ vựng mới" << std::endl;
-    std::cout << "  5️⃣  Thoát chương trình" << std::endl;
+    std::cout << "1.Hiển thị toàn bộ danh sách từ vựng" << std::endl;
+    std::cout << "2.Ôn tiếng Nhật (Việt → Nhật)" << std::endl;
+    std::cout << "3.Ôn tiếng Việt (Nhật → Việt)" << std::endl;
+    std::cout << "4.Thêm từ vựng mới" << std::endl;
+    std::cout << "5.Thoát chương trình" << std::endl;
     std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
     std::cout << "\n👉 Lựa chọn của bạn: ";
 }
@@ -245,7 +241,7 @@ void MenuHelper::chayMenu(CSVHandler& handler, std::vector<flashCard>& cards) {
             break;
         } else {
             std::cout << "\n❌ Lựa chọn không hợp lệ! Vui lòng chọn từ 1-5." << std::endl;
-            std::cout << "Ấn phím bất kỳ để thử lại...";
+            std::cout << "Ấn phím Enter để thử lại...";
             _getch();
         }
     }
