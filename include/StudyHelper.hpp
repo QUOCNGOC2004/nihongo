@@ -17,4 +17,7 @@ public:
     // Lọc từ vựng theo ngày và xáo trộn
     static std::vector<flashCard> getShuffledCardsByDate(const std::vector<flashCard>& cards, const std::string& date);
     
+    // Lấy danh sách các ngày duy nhất từ danh sách từ vựng (sắp xếp giảm dần - mới nhất trước)
+    static std::vector<std::string> getUniqueDates(const std::vector<flashCard>& cards);
+    
 };

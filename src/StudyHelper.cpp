@@ -2,6 +2,7 @@
 #include "TimeUtils.hpp"
 #include <algorithm>
 #include <random>
+#include <set>
 
 // Xáo trộn mảng từ vựng
 void StudyHelper::shuffleCards(std::vector<flashCard>& cards) {
@@ -38,4 +39,21 @@ std::vector<flashCard> StudyHelper::getShuffledCardsByDate(const std::vector<fla
     std::vector<flashCard> filtered = getCardsByDate(cards, date);
     shuffleCards(filtered);
     return filtered;
+}
+
+// Lấy danh sách các ngày duy nhất
+std::vector<std::string> StudyHelper::getUniqueDates(const std::vector<flashCard>& cards) {
+    std::set<std::string> dateSet;
+    
+    // Thu thập tất cả các ngày duy nhất
+    for (const auto& card : cards) {
+        std::string cardDate = TimeUtils::formatTimestampDate(card.getTimestamp());
+        dateSet.insert(cardDate);
+    }
+    
+    // Chuyển từ set sang vector và sắp xếp giảm dần (mới nhất trước)
+    std::vector<std::string> dates(dateSet.begin(), dateSet.end());
+    std::sort(dates.begin(), dates.end(), std::greater<std::string>());
+    
+    return dates;
 }

@@ -2,6 +2,7 @@
 #include "StudyHelper.hpp"
 #include <iostream>
 #include <conio.h> // Để sử dụng _getch() trên Windows
+#include <string>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -250,6 +251,117 @@ void MenuHelper::themTuVungMoi(CSVHandler &handler, std::vector<flashCard> &card
     _getch();
 }
 
+// 5. Hiển thị menu lọc theo ngày và xử lý lựa chọn
+void MenuHelper::hienThiMenuTheoNgay(CSVHandler& handler, std::vector<flashCard>& cards) {
+    if (cards.empty()) {
+        system("cls");
+        std::cout << "❌ Không có từ vựng nào!" << std::endl;
+        std::cout << "Ấn phím bất kỳ để quay lại menu...";
+        _getch();
+        return;
+    }
+    
+    // Lấy danh sách các ngày duy nhất
+    std::vector<std::string> dates = StudyHelper::getUniqueDates(cards);
+    
+    if (dates.empty()) {
+        system("cls");
+        std::cout << "❌ Không tìm thấy ngày nào!" << std::endl;
+        std::cout << "Ấn phím bất kỳ để quay lại menu...";
+        _getch();
+        return;
+    }
+    
+    while (true) {
+        system("cls");
+        std::cout << "╔════════════════════════════════════════════════════════════════╗" << std::endl;
+        std::cout << "║              LỌC TỪ VỰNG THEO NGÀY                             ║" << std::endl;
+        std::cout << "╚════════════════════════════════════════════════════════════════╝" << std::endl;
+        std::cout << "\n📅 Chọn ngày để xem từ vựng:" << std::endl;
+        std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
+        
+        // Hiển thị danh sách các ngày với số lượng từ vựng
+        for (size_t i = 0; i < dates.size(); ++i) {
+            std::vector<flashCard> cardsOnDate = StudyHelper::getCardsByDate(cards, dates[i]);
+            std::cout << (i + 1) << ". " << dates[i] << " (" << cardsOnDate.size() << " từ vựng)" << std::endl;
+        }
+        
+        std::cout << "0. Quay lại menu chính" << std::endl;
+        std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
+        std::cout << "\n👉 Lựa chọn của bạn: ";
+        
+        std::string luaChon;
+        std::getline(std::cin, luaChon);
+        
+        if (luaChon == "0") {
+            break; // Quay lại menu chính
+        }
+        
+        // Kiểm tra lựa chọn hợp lệ
+        try {
+            int choice = std::stoi(luaChon);
+            if (choice >= 1 && choice <= static_cast<int>(dates.size())) {
+                std::string selectedDate = dates[choice - 1];
+                chayMenuTheoNgay(selectedDate, cards);
+            } else {
+                std::cout << "\n❌ Lựa chọn không hợp lệ!" << std::endl;
+                std::cout << "Ấn phím Enter để thử lại...";
+                _getch();
+            }
+        } catch (...) {
+            std::cout << "\n❌ Vui lòng nhập số!" << std::endl;
+            std::cout << "Ấn phím Enter để thử lại...";
+            _getch();
+        }
+    }
+}
+
+// Chạy menu phụ cho từ vựng đã lọc theo ngày
+void MenuHelper::chayMenuTheoNgay(const std::string& date, const std::vector<flashCard>& cards) {
+    // Lọc từ vựng theo ngày đã chọn
+    std::vector<flashCard> filteredCards = StudyHelper::getCardsByDate(cards, date);
+    
+    if (filteredCards.empty()) {
+        system("cls");
+        std::cout << "❌ Không có từ vựng nào trong ngày " << date << "!" << std::endl;
+        std::cout << "Ấn phím bất kỳ để quay lại...";
+        _getch();
+        return;
+    }
+    
+    while (true) {
+        system("cls");
+        std::cout << "╔════════════════════════════════════════════════════════════════╗" << std::endl;
+        std::cout << "║          TỪ VỰNG NGÀY: " << date << "                      ║" << std::endl;
+        std::cout << "╚════════════════════════════════════════════════════════════════╝" << std::endl;
+        std::cout << "\n📋 MENU:" << std::endl;
+        std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
+        std::cout << "1. Hiển thị toàn bộ từ vựng (" << filteredCards.size() << " từ)" << std::endl;
+        std::cout << "2. Ôn tiếng Nhật (Việt → Nhật)" << std::endl;
+        std::cout << "3. Ôn tiếng Việt (Nhật → Việt)" << std::endl;
+        std::cout << "4. Quay lại" << std::endl;
+        std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
+        std::cout << "\n👉 Lựa chọn của bạn: ";
+        
+        std::string luaChon;
+        std::getline(std::cin, luaChon);
+        
+        if (luaChon == "1") {
+            hienThiToanBoDanhSach(filteredCards);
+        } else if (luaChon == "2") {
+            onTiengNhat(filteredCards);
+        } else if (luaChon == "3") {
+            onTiengViet(filteredCards);
+        } else if (luaChon == "4") {
+            break; // Quay lại menu chọn ngày
+        } else {
+            std::cout << "\n❌ Lựa chọn không hợp lệ! Vui lòng chọn từ 1-4." << std::endl;
+            std::cout << "Ấn phím Enter để thử lại...";
+            _getch();
+        }
+    }
+}
+
 // Hiển thị menu chính
 void MenuHelper::hienThiMenu()
 {
@@ -259,11 +371,12 @@ void MenuHelper::hienThiMenu()
     std::cout << "╚════════════════════════════════════════════════════════════════╝" << std::endl;
     std::cout << "\n📋 MENU CHÍNH:" << std::endl;
     std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
-    std::cout << "1.Hiển thị toàn bộ danh sách từ vựng" << std::endl;
-    std::cout << "2.Ôn tiếng Nhật (Việt → Nhật)" << std::endl;
-    std::cout << "3.Ôn tiếng Việt (Nhật → Việt)" << std::endl;
-    std::cout << "4.Thêm từ vựng mới" << std::endl;
-    std::cout << "5.Thoát chương trình" << std::endl;
+    std::cout << "1. Hiển thị toàn bộ danh sách từ vựng" << std::endl;
+    std::cout << "2. Ôn tiếng Nhật (Việt → Nhật)" << std::endl;
+    std::cout << "3. Ôn tiếng Việt (Nhật → Việt)" << std::endl;
+    std::cout << "4. Thêm từ vựng mới" << std::endl;
+    std::cout << "5. Lọc từ vựng theo ngày" << std::endl;
+    std::cout << "6. Thoát chương trình" << std::endl;
     std::cout << "────────────────────────────────────────────────────────────────" << std::endl;
     std::cout << "\n👉 Lựa chọn của bạn: ";
 }
@@ -300,6 +413,10 @@ void MenuHelper::chayMenu(CSVHandler &handler, std::vector<flashCard> &cards)
         }
         else if (luaChon == "5")
         {
+            hienThiMenuTheoNgay(handler, cards);
+        }
+        else if (luaChon == "6")
+        {
             system("cls");
             std::cout << "\n╔════════════════════════════════════════════════════════════════╗" << std::endl;
             std::cout << "║              👋 TẠM BIỆT! CHÚC BẠN HỌC TỐT! 📚                 ║" << std::endl;
@@ -308,7 +425,7 @@ void MenuHelper::chayMenu(CSVHandler &handler, std::vector<flashCard> &cards)
         }
         else
         {
-            std::cout << "\n❌ Lựa chọn không hợp lệ! Vui lòng chọn từ 1-5." << std::endl;
+            std::cout << "\n❌ Lựa chọn không hợp lệ! Vui lòng chọn từ 1-6." << std::endl;
             std::cout << "Ấn phím Enter để thử lại...";
             _getch();
         }
