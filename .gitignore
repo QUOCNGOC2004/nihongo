@@ -8,7 +8,6 @@ cmake_install.cmake
 Makefile
 
 # Executables
-*.exe
 *.out
 
 # Object files

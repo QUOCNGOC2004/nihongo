@@ -50,7 +50,7 @@ Nhập từ mới vào ứng dụng: tiếng Việt, tiếng Nhật, và ghi ch�
 
 ## 🚀 Hướng Dẫn Cài Đặt
 
-### Có thể chỉ cần tải trực tiếp file `nihongo_app.exe` về và chạy luôn hoặc sử dụng cách dưới đây :
+### Nếu không muốn thay đổi code mà sử dụng luôn thì chỉ cần tải dự án về và chạy trực tiếp file `nihongo_app.exe` hoặc nếu muốn thay đổi code thì làm theo các bước dưới đây,sau đó build lại (file rebuild.bat chỉ dùng khi bạn sửa code mà không thêm file mới):
 ### Bước 1: Cài Đặt Các Công Cụ Cần Thiết
 
 #### 📥 Cài MinGW (Trình biên dịch C++)
@@ -84,7 +84,7 @@ Nhập từ mới vào ứng dụng: tiếng Việt, tiếng Nhật, và ghi ch�
 
 ### Bước 2: Tải Dự Án Về Máy
 
-1. Tải file ZIP của dự án về (hoặc clone nếu biết dùng Git)
+1. Tải file ZIP của dự án về
 2. Giải nén vào thư mục bạn muốn, ví dụ: `C:\Users\YourName\Documents\nihongo`
 
 ### Bước 3: Chạy Ứng Dụng
